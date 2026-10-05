@@ -33,11 +33,13 @@ Có thể dùng `render.yaml`, hoặc tạo thủ công hai Web Service cùng tr
 
 ### Master
 
-Start command:
+Đặt environment:
 
 ```text
-dotnet GarenaOrchestrator.dll master
+MODE=master
 ```
+
+Không bắt buộc cấu hình Docker Command/Start Command. Nếu Render để trống command, ứng dụng mặc định chạy `master`.
 
 Environment bắt buộc:
 
@@ -56,10 +58,10 @@ Master tự tạo bảng `orchestrator_state`. Không cần chạy migration th�
 
 ### Satellite
 
-Start command:
+Đặt environment:
 
 ```text
-dotnet GarenaOrchestrator.dll satellite
+MODE=satellite
 ```
 
 Environment:

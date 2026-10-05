@@ -3,9 +3,10 @@ services:
     name: garena-orchestrator-master
     runtime: docker
     dockerfilePath: ./Dockerfile
-    dockerCommand: dotnet GarenaOrchestrator.dll master
     healthCheckPath: /health
     envVars:
+      - key: MODE
+        value: master
       - key: ADMIN_USER
         value: admin
       - key: ADMIN_PASSWORD
@@ -23,9 +24,10 @@ services:
     name: garena-orchestrator-satellite
     runtime: docker
     dockerfilePath: ./Dockerfile
-    dockerCommand: dotnet GarenaOrchestrator.dll satellite
     healthCheckPath: /health
     envVars:
+      - key: MODE
+        value: satellite
       - key: MASTER_URL
         sync: false
       - key: AGENT_TOKEN
