@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: garena-orchestrator-master
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: dotnet GarenaOrchestrator.dll master
+    healthCheckPath: /health
+    envVars:
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: MASTER_ENCRYPTION_KEY
+        generateValue: true
+      - key: PUBLIC_URL
+        sync: false
+      - key: TURSO_URL
+        sync: false
+      - key: TURSO_TOKEN
+        sync: false
+
+  - type: web
+    name: garena-orchestrator-satellite
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: dotnet GarenaOrchestrator.dll satellite
+    healthCheckPath: /health
+    envVars:
+      - key: MASTER_URL
+        sync: false
+      - key: AGENT_TOKEN
+        sync: false
+      - key: SATELLITE_NAME
+        value: render-satellite-01
+      - key: SATELLITE_SLOTS
+        value: 1

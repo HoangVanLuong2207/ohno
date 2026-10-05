@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Garena Orchestrator</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">MASTER SERVER</p>
+      <h1>Garena Orchestrator</h1>
+      <p class="subtitle">Quản lý vệ tinh, IP outbound và proxy tập trung.</p>
+    </div>
+    <div class="header-actions">
+      <span id="storage" class="storage">Đang tải…</span>
+      <button id="refresh" class="secondary">Làm mới</button>
+    </div>
+  </header>
+
+  <main>
+    <aside class="notice"><strong>Lưu ý về Render:</strong> IP hiển thị là IP outbound đang được quan sát. Render có thể dùng bất kỳ IP nào trong dải outbound của region; muốn allowlist ổn định, hãy nhập toàn bộ CIDR trong mục <em>Connect → Outbound</em> hoặc dùng Dedicated IP.</aside>
+    <section class="metrics">
+      <article><span>Vệ tinh online</span><strong id="onlineCount">0</strong></article>
+      <article><span>Tổng vệ tinh</span><strong id="agentCount">0</strong></article>
+      <article><span>Proxy</span><strong id="proxyCount">0</strong></article>
+      <article><span>Proxy hoạt động</span><strong id="healthyCount">0</strong></article>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-title">
+          <div><p class="eyebrow">AGENTS</p><h2>Vệ tinh</h2></div>
+          <button id="showAgentForm">+ Tạo vệ tinh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Vệ tinh</th><th>IP VPS để whitelist</th><th>Proxy được gán</th><th>Kiểm tra proxy</th><th></th></tr></thead>
+            <tbody id="agents"><tr><td colspan="5" class="empty">Chưa có vệ tinh.</td></tr></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-title">
+          <div><p class="eyebrow">PROXIES</p><h2>Kho proxy</h2></div>
+          <button id="showProxyForm">+ Thêm proxy</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tên</th><th>Endpoint</th><th>Xác thực</th><th>Đang gán</th><th></th></tr></thead>
+            <tbody id="proxies"><tr><td colspan="5" class="empty">Chưa có proxy.</td></tr></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="agentDialog">
+    <form id="agentForm">
+      <div class="dialog-title"><h2>Tạo vệ tinh</h2><button type="button" class="icon close">×</button></div>
+      <label>Tên vệ tinh<input name="name" maxlength="80" placeholder="render-satellite-01" required></label>
+      <label>Số slot<input name="maxSlots" type="number" min="1" max="50" value="1" required></label>
+      <p class="hint">Token chỉ hiển thị một lần sau khi tạo.</p>
+      <div class="dialog-actions"><button type="button" class="secondary close">Hủy</button><button type="submit">Tạo token</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="proxyDialog">
+    <form id="proxyForm">
+      <div class="dialog-title"><h2>Thêm proxy</h2><button type="button" class="icon close">×</button></div>
+      <label>Tên proxy<input name="name" maxlength="80" placeholder="Proxy VN 01" required></label>
+      <label>URL<input name="url" placeholder="http://host:port" required></label>
+      <div class="two-cols">
+        <label>Username<input name="username" autocomplete="off"></label>
+        <label>Password<input name="password" type="password" autocomplete="new-password"></label>
+      </div>
+      <p class="hint">Hỗ trợ http, https, socks4, socks5. Không đặt user/password trong URL.</p>
+      <div class="dialog-actions"><button type="button" class="secondary close">Hủy</button><button type="submit">Lưu proxy</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="tokenDialog">
+    <div class="dialog-title"><h2>Vệ tinh đã được tạo</h2><button type="button" class="icon close">×</button></div>
+    <p class="hint warning">Hãy sao chép token hoặc lệnh ngay. Master không thể hiển thị lại token này.</p>
+    <label>Agent token<div class="copy-row"><input id="newToken" readonly><button data-copy="newToken">Sao chép</button></div></label>
+    <label>Lệnh chạy<div class="copy-row"><textarea id="newCommand" rows="5" readonly></textarea><button data-copy="newCommand">Sao chép</button></div></label>
+    <div class="dialog-actions"><button class="close">Đã lưu</button></div>
+  </dialog>
+
+  <div id="toast" role="status"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
